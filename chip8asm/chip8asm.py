@@ -16,9 +16,9 @@ LABEL = "label"
 OP = "op"
 OPERANDS = "operands"
 COMMENT = "comment"
-SOURCE = "s"
-TARGET = "t"
-NUMERIC = "n"
+SOURCE = "source"
+TARGET = "target"
+NUMERIC = "numeric"
 
 # Opcode translation
 OPERATIONS = {
@@ -132,6 +132,7 @@ class Statement:
             raise TranslationError(error)
 
         operation = OPERATIONS[self.op]
+        self.opcode = operation[OP]
         operands = self.operands.split(",")
 
         if len(operands) != operation[OPERANDS]:
@@ -142,11 +143,51 @@ class Statement:
         counter = 0
         for operand_type in [SOURCE, TARGET, NUMERIC]:
             if operation[operand_type] != 0:
-                setattr(self, operand_type, operands[counter])
+                self.set_value(operand_type, operands[counter])
                 counter += 1
 
-        self.opcode = OPERATIONS[self.op]
 
+    def set_value(self, operand_type, operand):
+        '''
+        Given the type of operand we expect, as well as an operand value,
+        set the operand to the correct value, checking to make sure that
+        the value type matches what we expect.
+
+        @param operand_type: the type of the operand we expect
+        @type: [ str ]
+
+        @param operand: the value of the operand we are passing in
+        @type: str
+        '''
+        if operand_type == SOURCE or operand_type == TARGET:
+            setattr(self, operand_type, self.get_register(operand))
+        else:
+            setattr(self, operand_type, self.get_value(operand))
+
+    def is_register(self, string):
+        '''
+        Checks to see if a register is specified. Registers start with 'r' or
+        'R'. All registers are specified in hex - R0 through RF.
+
+        @param string: a string representing the operand
+        @type string: str
+        '''
+        return string.lower().startswith("r")
+
+    def get_value(self, string):
+        if string.startswith("$"):
+            return hex(int(string[1:], 16))
+        return string
+
+    def get_register(self, string):
+        if not self.is_register(string):
+            error = "Expected register, but got [{}]".format(operand)
+            raise TranslationError(error)
+
+        if len(string) > 2:
+            error = "Invalid register [{}]".format(operand)
+
+        return hex(int(string[1:],16))
       
     def is_pseudo_op(self):
         '''
@@ -169,6 +210,7 @@ class Statement:
         @rtype: boolean
         '''
         return self.op == ""
+
 
     def get_label(self):
         '''

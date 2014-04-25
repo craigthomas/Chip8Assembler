@@ -19,6 +19,9 @@ COMMENT = "comment"
 SOURCE = "source"
 TARGET = "target"
 NUMERIC = "numeric"
+SOURCE_REG = "s"
+TARGET_REG = "t"
+NUMERIC_REG = "n"
 
 # Opcode translation
 OPERATIONS = {
@@ -56,11 +59,9 @@ OPERATIONS = {
 }
 
 # Pseudo operations
-END = "END"
-ORG = "ORG"
-EQU = "EQU"
-INCLUDE = "INCLUDE"
-PSEUDO_OPERATIONS = [ END, ORG, EQU, INCLUDE ]
+FCB = "FCB"
+FDB = "FDB"
+PSEUDO_OPERATIONS = [ FCB, FDB ]
 
 # Pattern to parse a single line
 ASM_LINE_REGEX = re.compile("(?P<" + LABEL + ">\w*)\s+(?P<" + OP + ">\w*)\s+"
@@ -101,6 +102,8 @@ class Statement:
         self.source = ""
         self.target = ""
         self.numeric = ""
+        self.operation = None
+        self.address = ""
 
     def __str__(self):
         return "{}  {}  {}  {}".format(self.label, self.op,
@@ -131,7 +134,7 @@ class Statement:
             error = "Invalid mnemonic '{}'".format(self.op)
             raise TranslationError(error)
 
-        operation = OPERATIONS[self.op]
+        operation = self.get_operation()
         self.opcode = operation[OP]
         operands = self.operands.split(",")
 
@@ -188,6 +191,11 @@ class Statement:
             error = "Invalid register [{}]".format(operand)
 
         return hex(int(string[1:],16))
+
+    def get_operation(self):
+        if self.is_pseudo_op():
+            return self.op
+        return OPERATIONS[self.op]
       
     def is_pseudo_op(self):
         '''
@@ -221,6 +229,48 @@ class Statement:
         '''
         return self.label
 
+    def replace_label(self, label, value):
+        if self.source == label:
+            self.source = value
+        if self.target == label:
+            self.target = value
+        if self.numeric == label:
+            self.numeric = value
+
+    def fix_values(self):
+        if self.is_pseudo_op():
+            pass
+        else:
+            operation = self.get_operation()
+            if operation[SOURCE] == 1:
+                source = self.source[2:]
+                if len(source) > 1:
+                    error = "Error: expected source in (0x0,0xF), but got {}"\
+                        .format(hex(self.source))
+                    raise TranslationError(error)
+                self.opcode = self.opcode.replace(SOURCE_REG, source)
+            if operation[TARGET] == 1:
+                target = self.target[2:]
+                if len(target) > 1:
+                    error = "Error: expected target in (0x0,0xF), but got {}"\
+                        .format(hex(self.target))
+                    raise TranslationError(error)
+                self.opcode = self.opcode.replace(TARGET_REG, target)
+            if operation[NUMERIC] != 0:
+                numeric = self.numeric[2:]
+                length = operation[NUMERIC] 
+                if len(numeric) > length:
+                    error = "Error: expected numeric of length {}, but was {}"\
+                        .format(length, len(numeric))
+                    raise TranslationError(error)
+                numeric = numeric.zfill(length)
+                numeric_string = NUMERIC_REG * length
+                self.opcode = self.opcode.replace(numeric_string, numeric)
+
+    def set_address(self, address):
+        self.address = address
+                   
+
 # F U N C T I O N S ###########################################################
 
 def parse_arguments():
@@ -233,6 +283,10 @@ def parse_arguments():
     parser.add_argument("filename", help = "the name of the file to examine")
     parser.add_argument("-s", action = "store_true", help = "print out the " 
         "symbol table")
+    parser.add_argument("-p", action = "store_true", help = "print out the "
+        "assembled statements when finished")
+    parser.add_argument("-o", metavar = "FILE", help = "stores the assembled "
+        "program in FILE")
     return parser.parse_args()
 
 
@@ -259,21 +313,18 @@ def main(args):
     '''
     symbol_table = dict()
     statements = []
+    address = 0x200
 
     # Pass 1: parse all of the statements in the file, but do not attempt
     # to resolve any of the labels or locations
-    print "Processing [{}]".format(args.filename) 
-    print "Pass 1:",
     with open(args.filename) as infile:
         for line in infile:
             statement = Statement()
             statement.parse_line(line)
             if not statement.is_empty():
                 statements.append(statement)
-    print "{} statement(s) parsed".format(len(statements))
 
     # Pass 2: translate the statements into their respective opcodes
-    print "Pass 2:",
     for index in xrange(len(statements)):
         statement = statements[index]
         try:
@@ -291,7 +342,22 @@ def main(args):
                 print "Line: " + str(statement)
                 sys.exit(1)
             symbol_table[label] = index
-    print "{} operations translated".format(len(statements))
+
+    # Pass 3: determine label addresses
+    num_labels = 0
+    for statement in statements:
+        label = statement.get_label()
+        if label:
+            symbol_table[label] = hex(address)
+            num_labels += 1
+        statement.set_address(hex(address))
+        address += 2
+
+    # Pass 4: translate operands into respective opcodes
+    for statement in statements:
+        for label, value in symbol_table.iteritems():
+            statement.replace_label(label, value)
+        statement.fix_values()
 
     # Check to see if the user wanted to print the symbol table
     if args.s:
@@ -299,7 +365,28 @@ def main(args):
         for symbol, value in symbol_table.iteritems():
             print("{} {}".format(symbol, value))
             
+    # Check to see if the user wanted a print out of the assembly
+    if args.p:
+        print("-- Assembled Statements --")
+        for statement in statements:
+            print("0x{} {} {} {} {}  # {}".format(
+                statement.address[2:].upper().rjust(4, '0'),
+                statement.opcode.upper().rjust(4, ' '), 
+                statement.label.rjust(10, ' '),
+                statement.op.rjust(5, ' '),
+                statement.operands.rjust(15, ' '),
+                statement.comment.ljust(40, ' ')))
 
+    # Check to see if the user wants to save the binary file
+    if args.o:
+        fp = open(args.o, "wb")
+        machine_codes = []
+        for statement in statements:
+            for index in xrange(0, len(statement.opcode), 2):
+                machine_codes.append(int(statement.opcode[index:index+2], 16))
+        fp.write(bytearray(machine_codes))
+        fp.close()
+        
 
 # M A I N #####################################################################
 

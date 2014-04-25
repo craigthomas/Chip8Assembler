@@ -106,8 +106,13 @@ class Statement:
         self.address = ""
 
     def __str__(self):
-        return "{}  {}  {}  {}".format(self.label, self.op,
-               self.operands, self.comment)
+        return "0x{} {} {} {} {}  # {}".format(
+                self.address[2:].upper().rjust(4, '0'),
+                self.opcode.upper().rjust(4, ' '), 
+                self.label.rjust(10, ' '),
+                self.op.rjust(5, ' '),
+                self.operands.rjust(15, ' '),
+                self.comment.ljust(40, ' '))
 
     def parse_line(self, line):
         '''
@@ -369,13 +374,7 @@ def main(args):
     if args.p:
         print("-- Assembled Statements --")
         for statement in statements:
-            print("0x{} {} {} {} {}  # {}".format(
-                statement.address[2:].upper().rjust(4, '0'),
-                statement.opcode.upper().rjust(4, ' '), 
-                statement.label.rjust(10, ' '),
-                statement.op.rjust(5, ' '),
-                statement.operands.rjust(15, ' '),
-                statement.comment.ljust(40, ' ')))
+            print(statement)
 
     # Check to see if the user wants to save the binary file
     if args.o:

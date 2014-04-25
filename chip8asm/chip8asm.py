@@ -183,19 +183,26 @@ class Statement:
         return string.lower().startswith("r")
 
     def get_value(self, string):
+        '''
+        Return the hex representation of the value if it starts with a '$'.
+        Otherwise, just return the value itself, since it is likely a label.
+ 
+        @param string: the string to scan
+        @type string: str
+        '''
         if string.startswith("$"):
             return hex(int(string[1:], 16))
         return string
 
     def get_register(self, string):
         if not self.is_register(string):
-            error = "Expected register, but got [{}]".format(operand)
+            error = "Expected register, but got [{}]".format(string)
             raise TranslationError(error)
 
         if len(string) > 2:
-            error = "Invalid register [{}]".format(operand)
+            error = "Invalid register [{}]".format(string)
 
-        return hex(int(string[1:],16))
+        return hex(int(string[1:], 16))
 
     def get_operation(self):
         if self.is_pseudo_op():
@@ -335,12 +342,10 @@ def main(args):
             symbol_table[label] = index
 
     # Pass 3: determine label addresses
-    num_labels = 0
     for statement in statements:
         label = statement.get_label()
         if label:
             symbol_table[label] = hex(address)
-            num_labels += 1
         statement.set_address(hex(address))
         address += 2
 
@@ -364,13 +369,12 @@ def main(args):
 
     # Check to see if the user wants to save the binary file
     if args.o:
-        fp = open(args.o, "wb")
         machine_codes = []
         for statement in statements:
             for index in xrange(0, len(statement.opcode), 2):
                 machine_codes.append(int(statement.opcode[index:index+2], 16))
-        fp.write(bytearray(machine_codes))
-        fp.close()
+        with open(args.o, "wb") as outfile:
+            outfile.write(bytearray(machine_codes))
         
 
 # M A I N #####################################################################

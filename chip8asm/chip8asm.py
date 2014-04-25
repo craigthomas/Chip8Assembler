@@ -295,20 +295,6 @@ def parse_arguments():
     return parser.parse_args()
 
 
-def read_file(filename):
-    '''
-    Returns a list of all of the strings contained within the file called
-    filename. Each string in the list represents one line of the file.
-
-    @param filename: the name of the file to open
-    @type filename: str
-
-    @return: a list of strings read from the file
-    @rtype: [ str ]
-    '''
-    return open(filename).readlines()
-
-
 def main(args):
     '''
     Runs the assembler with the specified arguments.

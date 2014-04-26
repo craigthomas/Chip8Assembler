@@ -108,7 +108,7 @@ class Statement:
     def __str__(self):
         return "0x{} {} {} {} {}  # {}".format(
                 self.address[2:].upper().rjust(4, '0'),
-                self.opcode.upper().rjust(4, ' '), 
+                self.opcode.upper().rjust(4, '0'), 
                 self.label.rjust(10, ' '),
                 self.op.rjust(5, ' '),
                 self.operands.rjust(15, ' '),
@@ -195,6 +195,12 @@ class Statement:
         return string
 
     def get_register(self, string):
+        '''
+        Returns the register number specified.
+
+        @param string: the string representation of the register
+        @type string: str
+        '''
         if not self.is_register(string):
             error = "Expected register, but got [{}]".format(string)
             raise TranslationError(error)
@@ -205,6 +211,9 @@ class Statement:
         return hex(int(string[1:], 16))
 
     def get_operation(self):
+        '''
+        Returns the operation dictionary based upon the mnemonic. 
+        '''
         if self.is_pseudo_op():
             return self.op
         return OPERATIONS[self.op]
@@ -242,6 +251,16 @@ class Statement:
         return self.label
 
     def replace_label(self, label, value):
+        '''
+        Given a label and a value, replace the source, target, or numeric
+        values with the given value if they are a label.
+
+        @param label: the label to replace
+        @type label: str
+
+        @param value: the value to replace the label with
+        @type value: str
+        '''
         if self.source == label:
             self.source = value
         if self.target == label:
@@ -250,8 +269,18 @@ class Statement:
             self.numeric = value
 
     def fix_values(self):
+        '''
+        Translate the source, target, and numeric values into the appropriate
+        parts of the opcode. For pseudo operations, simply copy the value to
+        the opcode.
+        '''
         if self.is_pseudo_op():
-            pass
+            if self.op == FCB or self.op == FDB:
+                if not self.operands.startswith("$"):
+                    error = "Error: expected value starting with $, but got "\
+                        "{}".format(self.operands)
+                    raise TranslationError(error)
+                self.opcode = self.get_value(self.operands)[2:]
         else:
             operation = self.get_operation()
             if operation[SOURCE] == 1:
@@ -280,6 +309,12 @@ class Statement:
                 self.opcode = self.opcode.replace(numeric_string, numeric)
 
     def set_address(self, address):
+        '''
+        Set the address of the current operation in hex.
+
+        @param address: the address of the operation
+        @type address: str
+        '''
         self.address = address
                    
 
@@ -300,6 +335,21 @@ def parse_arguments():
     parser.add_argument("-o", metavar = "FILE", help = "stores the assembled "
         "program in FILE")
     return parser.parse_args()
+
+
+def throw_error(error, statement):
+    '''
+    Prints out an error message.
+
+    @param error: the error message to throw
+    @type error: Exception
+
+    @param statement: the assembly statement that caused the error
+    @type statement: Statement
+    '''
+    print(error.value)
+    print("Line: " + statement)
+    sys.exit(1)
 
 
 def main(args):
@@ -328,17 +378,12 @@ def main(args):
         try:
             statement.translate()
         except TranslationError as error:
-            print "translation error"
-            print "Error: " + error.value
-            print "Line: " + str(statement)
-            sys.exit(1)
+            throw_error(error, statement)
         label = statement.get_label()
         if label:
             if label in symbol_table:
-                print "symbol error"
-                print "Error: label [" + label + "] redefined"
-                print "Line: " + str(statement)
-                sys.exit(1)
+                error = { value: "label [" + label + "] redefined" }
+                throw_error(error, statement)
             symbol_table[label] = index
 
     # Pass 3: determine label addresses
@@ -347,13 +392,19 @@ def main(args):
         if label:
             symbol_table[label] = hex(address)
         statement.set_address(hex(address))
-        address += 2
+        if statement.op == FCB:
+            address += 1
+        else:
+            address += 2
 
     # Pass 4: translate operands into respective opcodes
     for statement in statements:
         for label, value in symbol_table.iteritems():
             statement.replace_label(label, value)
-        statement.fix_values()
+        try:
+            statement.fix_values()
+        except TranslationError as error:
+            throw_error(error, statement)
 
     # Check to see if the user wanted to print the symbol table
     if args.s:
@@ -375,7 +426,6 @@ def main(args):
                 machine_codes.append(int(statement.opcode[index:index+2], 16))
         with open(args.o, "wb") as outfile:
             outfile.write(bytearray(machine_codes))
-        
 
 # M A I N #####################################################################
 

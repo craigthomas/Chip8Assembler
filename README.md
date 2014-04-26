@@ -88,10 +88,10 @@ The assembler supports the following Mnemonics:
 | `OR`     | `8st1` | 2 | Perform logical OR on register `s` and `t` and store in `t`  |
 | `AND`    | `8st2` | 2 | Perform logical AND on register `s` and `t` and store in `t` |
 | `XOR`    | `8st3` | 2 | Perform logical XOR on register `s` and `t` and store in `t` |
-| `ADDR`   | `8st4` | 2 | Add `s` to `t` and store in `s` - register `F` set if carry is generated |
-| `SUB`    | `8st5` | 2 | Subtract `s` from `t` and store in `s` - register `F` set if borrow is not generated |
-| `SHR`    | `8s06` | 1 | Shift bits in register `s` 1 bit to the right - bit 0 will shift to register `F` |
-| `SHL`    | `8s0E` | 1 | Shift bits in register `s` 1 bit to the left - bit 7 will shift to register `F` |
+| `ADDR`   | `8st4` | 2 | Add `s` to `t` and store in `s` - register `F` set on carry  |
+| `SUB`    | `8st5` | 2 | Subtract `s` from `t` and store in `s` - register `F` set on not borrow      |
+| `SHR`    | `8s06` | 1 | Shift bits in register `s` 1 bit to the right - bit 0 shifts to register `F` |
+| `SHL`    | `8s0E` | 1 | Shift bits in register `s` 1 bit to the left - bit 7 shifts to register `F`  |
 
 ## License
 

@@ -70,7 +70,9 @@ The assembler supports the following Mnemonics:
 
 | Mnemonic | Opcode | # Operands | Description |
 | -------- | ------ | ---------- | ----------- |
-| `SYS`    | `0nnn` | 1 | System call - ignored                                       |
+| `SYS`    | `0nnn` | 1 | System call (ignored)                                       |
+| `CLR`    | `00E0` | 0 | Clear the screen                                            |
+| `RTS`    | `00EE` | 0 | Return from subroutine                                      |
 | `JUMP`   | `1nnn` | 1 | Jump to address `nnn`                                       |
 | `CALL`   | `2nnn` | 1 | Call routine at address `nnn`                               |
 | `SKE`    | `3snn` | 2 | Skip next instruction if register `s` equals `nn`           |

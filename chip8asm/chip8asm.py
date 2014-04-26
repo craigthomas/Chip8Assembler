@@ -26,6 +26,8 @@ NUMERIC_REG = "n"
 # Opcode translation
 OPERATIONS = {
     "SYS"  : { OP: "0nnn", OPERANDS: 1, SOURCE: 0, TARGET: 0, NUMERIC: 3 },
+    "CLR"  : { OP: "00E0", OPERANDS: 0, SOURCE: 0, TARGET: 0, NUMERIC: 0 },
+    "RTS"  : { OP: "00EE", OPERANDS: 0, SOURCE: 0, TARGET: 0, NUMERIC: 0 },
     "JUMP" : { OP: "1nnn", OPERANDS: 1, SOURCE: 0, TARGET: 0, NUMERIC: 3 },
     "CALL" : { OP: "2nnn", OPERANDS: 1, SOURCE: 0, TARGET: 0, NUMERIC: 3 },
     "SKE"  : { OP: "3snn", OPERANDS: 2, SOURCE: 1, TARGET: 0, NUMERIC: 2 },
@@ -96,7 +98,7 @@ class Statement:
         self.opcode = ""
         self.op = ""
         self.label = ""
-        self.operands = ""
+        self.operands = None
         self.comment = ""
         self.size = 0
         self.source = ""
@@ -141,18 +143,19 @@ class Statement:
 
         operation = self.get_operation()
         self.opcode = operation[OP]
-        operands = self.operands.split(",")
+        if self.operands:
+            operands = self.operands.split(",")
 
-        if len(operands) != operation[OPERANDS]:
-            error = "Expected {} operand(s), but got {}".format(
-               operation[OPERANDS], len(operands))
-            raise TranslationError(error)
+            if len(operands) != operation[OPERANDS]:
+                error = "Expected {} operand(s), but got {}".format(
+                   operation[OPERANDS], len(operands))
+                raise TranslationError(error)
 
-        counter = 0
-        for operand_type in [SOURCE, TARGET, NUMERIC]:
-            if operation[operand_type] != 0:
-                self.set_value(operand_type, operands[counter])
-                counter += 1
+            counter = 0
+            for operand_type in [SOURCE, TARGET, NUMERIC]:
+                if operation[operand_type] != 0:
+                    self.set_value(operand_type, operands[counter])
+                    counter += 1
 
 
     def set_value(self, operand_type, operand):
@@ -348,7 +351,7 @@ def throw_error(error, statement):
     @type statement: Statement
     '''
     print(error.value)
-    print("Line: " + statement)
+    print("Line: " + str(statement))
     sys.exit(1)
 
 

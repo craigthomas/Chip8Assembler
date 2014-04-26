@@ -68,6 +68,19 @@ Where:
 * `OPERANDS` are registers, values or labels, as described in detail below
 * `COMMENT` is a 30 character comment describing the statement
 
+An example file:
+
+    # A comment line that contains nothing
+    clear    CLR
+    start    LOAD    r1,$0     Clear contents of register 1
+             ADD     r1,$1     Add 1 to the register
+             SKE     r1,$A     Check to see if we are at 10
+             JUMP    start     Jump back to the start
+    end      JUMP    end       Loop forever
+    data     FCB     $1A       One byte piece of data
+    data1    FDB     $FBEE     Two byte piece of data
+
+
 ### Mnemonic Table
 
 The assembler supports the following Mnemonics:

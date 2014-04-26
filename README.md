@@ -73,7 +73,7 @@ Where:
 The assembler supports the following Mnemonics:
 
 | Mnemonic | Opcode | Operands | Description |
-| -------- | ------ | -------- | ----------- |
+| -------- | ------ | :------: | ----------- |
 | `SYS`    | `0nnn` | 1 | System call (ignored)                                        |
 | `CLR`    | `00E0` | 0 | Clear the screen                                             |
 | `RTS`    | `00EE` | 0 | Return from subroutine                                       |
@@ -89,9 +89,14 @@ The assembler supports the following Mnemonics:
 | `AND`    | `8st2` | 2 | Perform logical AND on register `s` and `t` and store in `t` |
 | `XOR`    | `8st3` | 2 | Perform logical XOR on register `s` and `t` and store in `t` |
 | `ADDR`   | `8st4` | 2 | Add `s` to `t` and store in `s` - register `F` set on carry  |
-| `SUB`    | `8st5` | 2 | Subtract `s` from `t` and store in `s` - register `F` set on not borrow      |
+| `SUB`    | `8st5` | 2 | Subtract `s` from `t` and store in `s` - register `F` set on !borrow         |
 | `SHR`    | `8s06` | 1 | Shift bits in register `s` 1 bit to the right - bit 0 shifts to register `F` |
 | `SHL`    | `8s0E` | 1 | Shift bits in register `s` 1 bit to the left - bit 7 shifts to register `F`  |
+| `SKRNE`  | `9st0` | 2 | Skip next instruction if register `s` not equal register `t` |
+| `LOADI`  | `Annn` | 1 | Load index with value `nnn`                                  |
+| `JUMPI`  | `Bnnn` | 1 | Jump to address `nnn` + index                                |
+| `RAND`   | `Ctnn` | 2 | Generate random number between 0 and `nn` and store in `t`   |
+| `DRAW`   | `Dstn` | 3 | Draw `n` bit sprite at x location reg `s`, y location reg `t` |
 
 ## License
 

@@ -34,6 +34,8 @@ Additional options include printing the symbol table:
 
     python chip8asm/chip8asm.py test.asm -s
 
+Which will have the following output:
+
     -- Symbol Table --
     start 0x200
     data1 0x209
@@ -42,6 +44,8 @@ Additional options include printing the symbol table:
 Print out the assembled version of the input:
 
     python chip8asm/chip8asm.py test.asm -p
+
+Which will have the following output:
 
     -- Assembled Statements --
     0x0200 6100      start  LOAD           r1,$0  # Clear contents of register 1            
@@ -70,18 +74,22 @@ The assembler supports the following Mnemonics:
 
 | Mnemonic | Opcode | # Operands | Description |
 | -------- | ------ | ---------- | ----------- |
-| `SYS`    | `0nnn` | 1 | System call (ignored)                                       |
-| `CLR`    | `00E0` | 0 | Clear the screen                                            |
-| `RTS`    | `00EE` | 0 | Return from subroutine                                      |
-| `JUMP`   | `1nnn` | 1 | Jump to address `nnn`                                       |
-| `CALL`   | `2nnn` | 1 | Call routine at address `nnn`                               |
-| `SKE`    | `3snn` | 2 | Skip next instruction if register `s` equals `nn`           |
-| `SKNE`   | `4snn` | 2 | Do not skip next instruction if register `s` equals `nn`    |
-| `SKRE`   | `5st0` | 2 | Skip if register `s` equals register `t`                    |
-| `LOAD`   | `6snn` | 2 | Load register `s` with value `nn`                           |
-| `ADD`    | `7snn` | 2 | Add value `nn` to register `s`                              |
-| `MOVE`   | `8st0` | 2 | Move value from register `s` to register `t`                |
-| `OR`     | `8st1` | 2 | Perform logical OR on register `s` and `t` and store in `t` |
+| `SYS`    | `0nnn` | 1 | System call (ignored)                                        |
+| `CLR`    | `00E0` | 0 | Clear the screen                                             |
+| `RTS`    | `00EE` | 0 | Return from subroutine                                       |
+| `JUMP`   | `1nnn` | 1 | Jump to address `nnn`                                        |
+| `CALL`   | `2nnn` | 1 | Call routine at address `nnn`                                |
+| `SKE`    | `3snn` | 2 | Skip next instruction if register `s` equals `nn`            |
+| `SKNE`   | `4snn` | 2 | Do not skip next instruction if register `s` equals `nn`     |
+| `SKRE`   | `5st0` | 2 | Skip if register `s` equals register `t`                     |
+| `LOAD`   | `6snn` | 2 | Load register `s` with value `nn`                            |
+| `ADD`    | `7snn` | 2 | Add value `nn` to register `s`                               |
+| `MOVE`   | `8st0` | 2 | Move value from register `s` to register `t`                 |
+| `OR`     | `8st1` | 2 | Perform logical OR on register `s` and `t` and store in `t`  |
+| `AND`    | `8st2` | 2 | Perform logical AND on register `s` and `t` and store in `t` |
+| `XOR`    | `8st3` | 2 | Perform logical XOR on register `s` and `t` and store in `t` |
+| `ADDR`   | `8st4` | 2 | Add `s` to `t` and store in `s`, register `F` set if carry is generated |
+| `SUB`    | `8st5` | 2 | Subtract `s` from `t` and store in `s`, register `F` set if borrow is not generated |
 
 
 ## License

@@ -30,7 +30,7 @@ OPERATIONS = {
     "CALL" : { OP: "2nnn", OPERANDS: 1, SOURCE: 0, TARGET: 0, NUMERIC: 3 },
     "SKE"  : { OP: "3snn", OPERANDS: 2, SOURCE: 1, TARGET: 0, NUMERIC: 2 },
     "SKNE" : { OP: "4snn", OPERANDS: 2, SOURCE: 1, TARGET: 0, NUMERIC: 2 },
-    "SKRE" : { OP: "5stn", OPERANDS: 3, SOURCE: 1, TARGET: 1, NUMERIC: 1 },
+    "SKRE" : { OP: "5st0", OPERANDS: 2, SOURCE: 1, TARGET: 1, NUMERIC: 0 },
     "LOAD" : { OP: "6snn", OPERANDS: 2, SOURCE: 1, TARGET: 0, NUMERIC: 2 },
     "ADD"  : { OP: "7snn", OPERANDS: 2, SOURCE: 1, TARGET: 0, NUMERIC: 2 },
     "MOVE" : { OP: "8st0", OPERANDS: 2, SOURCE: 1, TARGET: 1, NUMERIC: 0 },

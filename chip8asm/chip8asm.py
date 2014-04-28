@@ -69,6 +69,9 @@ PSEUDO_OPERATIONS = [ FCB, FDB ]
 ASM_LINE_REGEX = re.compile("(?P<" + LABEL + ">\w*)\s+(?P<" + OP + ">\w*)\s+"
     "(?P<" + OPERANDS + ">[\w#\$,\+-]*)\s+(?P<" + COMMENT + ">.*)")
 
+# Pattern to match a register
+REG_LINE_REGEX = re.compile("[rR][0-9a-fA-F]$")
+
 # C L A S S E S ###############################################################
 
 class TranslationError(Exception):
@@ -107,6 +110,7 @@ class Statement:
         self.operation = None
         self.address = ""
 
+
     def __str__(self):
         return "0x{} {} {} {} {}  # {}".format(
                 self.address[2:].upper().rjust(4, '0'),
@@ -115,6 +119,7 @@ class Statement:
                 self.op.rjust(5, ' '),
                 self.operands.rjust(15, ' '),
                 self.comment.ljust(40, ' '))
+
 
     def parse_line(self, line):
         '''
@@ -126,6 +131,7 @@ class Statement:
             self.op = data.group(OP)
             self.operands = data.group(OPERANDS)
             self.comment = data.group(COMMENT)
+
 
     def translate(self):
         '''
@@ -175,6 +181,7 @@ class Statement:
         else:
             setattr(self, operand_type, self.get_value(operand))
 
+
     def is_register(self, string):
         '''
         Checks to see if a register is specified. Registers start with 'r' or
@@ -183,7 +190,8 @@ class Statement:
         @param string: a string representing the operand
         @type string: str
         '''
-        return string.lower().startswith("r")
+        return REG_LINE_REGEX.match(string) != None
+
 
     def get_value(self, string):
         '''
@@ -197,6 +205,7 @@ class Statement:
             return hex(int(string[1:], 16))
         return string
 
+
     def get_register(self, string):
         '''
         Returns the register number specified.
@@ -205,13 +214,12 @@ class Statement:
         @type string: str
         '''
         if not self.is_register(string):
-            error = "Expected register, but got [{}]".format(string)
+            error = "Expected register in r0-rF, but got [{}]".format(string)
             raise TranslationError(error)
-
         if len(string) > 2:
             error = "Invalid register [{}]".format(string)
-
         return hex(int(string[1:], 16))
+
 
     def get_operation(self):
         '''
@@ -220,6 +228,7 @@ class Statement:
         if self.is_pseudo_op():
             return self.op
         return OPERATIONS[self.op]
+
       
     def is_pseudo_op(self):
         '''
@@ -253,6 +262,7 @@ class Statement:
         '''
         return self.label
 
+
     def replace_label(self, label, value):
         '''
         Given a label and a value, replace the source, target, or numeric
@@ -270,6 +280,7 @@ class Statement:
             self.target = value
         if self.numeric == label:
             self.numeric = value
+
 
     def fix_values(self):
         '''
@@ -310,6 +321,7 @@ class Statement:
                 numeric = numeric.zfill(length)
                 numeric_string = NUMERIC_REG * length
                 self.opcode = self.opcode.replace(numeric_string, numeric)
+
 
     def set_address(self, address):
         '''

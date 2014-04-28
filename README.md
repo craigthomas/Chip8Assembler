@@ -136,9 +136,9 @@ Operands may be one of three different types:
 
 | Operand Type | Example | Description |
 | ------------ | :-----: | ----------- |
-| Register     | `r4`    | Specifies a register. Valid registers are in the range 0-F and must start with an `r` |
-| Hex value    | `$1234` | Specifies a hexadecimal value. Must begin with a `$`. |
-| Label        | `start` | Labels may be any string as long as it does not start with `r` |
+| Register     | `r4`    | Valid registers are in the range 0-F and must start with an `r` |
+| Hex value    | `$1234` | Specifies a hexadecimal value. Must begin with a `$`.           |
+| Label        | `start` | Labels may be any string as long as it does not start with `r`  |
 
 
 ## License

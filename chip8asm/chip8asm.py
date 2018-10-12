@@ -95,6 +95,23 @@ OPERATIONS = {
         {OP: "Fs55", OPERANDS: 1, SOURCE: 1, TARGET: 0, NUMERIC: 0},
     "READ":
         {OP: "Fs65", OPERANDS: 1, SOURCE: 1, TARGET: 0, NUMERIC: 0},
+    # Super Chip 8 Instructions
+    "SCRD":
+        {OP: "00Cn", OPERANDS: 1, SOURCE: 0, TARGET: 0, NUMERIC: 1},
+    "SCRR":
+        {OP: "00FB", OPERANDS: 0, SOURCE: 0, TARGET: 0, NUMERIC: 0},
+    "SCRL":
+        {OP: "00FC", OPERANDS: 0, SOURCE: 0, TARGET: 0, NUMERIC: 0},
+    "EXIT":
+        {OP: "00FD", OPERANDS: 0, SOURCE: 0, TARGET: 0, NUMERIC: 0},
+    "EXTD":
+        {OP: "00FE", OPERANDS: 0, SOURCE: 0, TARGET: 0, NUMERIC: 0},
+    "EXTE":
+        {OP: "00FF", OPERANDS: 0, SOURCE: 0, TARGET: 0, NUMERIC: 0},
+    "SRPL":
+        {OP: "Fs75", OPERANDS: 1, SOURCE: 1, TARGET: 0, NUMERIC: 0},
+    "LRPL":
+        {OP: "Fs85", OPERANDS: 1, SOURCE: 1, TARGET: 0, NUMERIC: 0}
 }
 
 # Pseudo operations

@@ -110,6 +110,8 @@ The assembler supports the following Mnemonics:
 | `JUMPI`  | `Bnnn` | 1 | Jump to address `nnn` + index                                  |
 | `RAND`   | `Ctnn` | 2 | Generate random number between 0 and `nn` and store in `t`     |
 | `DRAW`   | `Dstn` | 3 | Draw `n` byte sprite at x location reg `s`, y location reg `t` |
+| `SKPR`   | `Es9E` | 1 | Skip next instruction if the key in reg `s` is pressed         |
+| `SKUP`   | `EsA1` | 1 | Skip next instruction if the key in reg `s` is not pressed     |
 | `MOVED`  | `Ft07` | 1 | Move delay timer value into register `t`                       |
 | `KEYD`   | `Ft0A` | 1 | Wait for keypress and store in register `t`                    |
 | `LOADD`  | `Fs15` | 1 | Load delay timer with value in register `s`                    |

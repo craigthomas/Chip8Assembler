@@ -58,11 +58,11 @@ OPERATIONS = {
     "SUB":
         {OP: "8st5", OPERANDS: 2, SOURCE: 1, TARGET: 1, NUMERIC: 0},
     "SHR":
-        {OP: "8s06", OPERANDS: 1, SOURCE: 1, TARGET: 0, NUMERIC: 0},
+        {OP: "8st6", OPERANDS: 1, SOURCE: 1, TARGET: 1, NUMERIC: 0},
     "SUBN":
         {OP: "8st7", OPERANDS: 2, SOURCE: 1, TARGET: 1, NUMERIC: 0},
     "SHL":
-        {OP: "8s0E", OPERANDS: 1, SOURCE: 1, TARGET: 0, NUMERIC: 0},
+        {OP: "8stE", OPERANDS: 1, SOURCE: 1, TARGET: 1, NUMERIC: 0},
     "SKRNE":
         {OP: "9st0", OPERANDS: 2, SOURCE: 1, TARGET: 1, NUMERIC: 0},
     "LOADI":

@@ -1,9 +1,26 @@
-# Chip 8 Assembler 
+# (Super) Chip 8 Assembler
+
+## Table of Contents
+
+1. [What is it?](#what-is-it)
+2. [Requirements](#requirements)
+3. [Installation](#installation)
+4. [Usage](#usage)
+    1. [Print Symbol Table](#print-symbol-table)
+    2. [Print Assembled Statements](#print-assembled-statements)
+    3. [Input Format](#input-format)
+5. [Mnemonic Table](#mnemonic-table)
+    1. [Chip 8 Mnemonics](#chip-8-mnemonics)
+    2. [Super Chip 8 Mnemonics](#super-chip-8-mnemonics)
+    3. [Pseudo Operations](#pseudo-operations)
+    4. [Operands](#operands)
+6. [License](#license)
+7. [Further Documentation](#further-documentation)
 
 ## What is it?
 
-This project is a Chip 8 assembler written in Python 2.7. The assembler will 
-take valid Chip 8 assembly statements and generate a binary file containing
+This project is a (Super) Chip 8 assembler written in Python 2.7. The assembler will
+take valid Super Chip 8 assembly statements and generate a binary file containing
 the correct machine instructions.
 
 
@@ -19,47 +36,72 @@ The only requirements for this project is:
 To install the source files, simply clone the repository in the directory
 of your choice:
 
+    ```
     git clone https://github.com/craigthomas/Chip8Assembler.git
+    ```
 
 
 ## Usage
 
 To run the assembler:
 
+    ```
     python chip8asm/chip8asm.py input_file -o output_file
+    ```
 
 This will assemble the instructions found in file `input_file` and will generate
 the associated Chip 8 machine instructions in binary format in `output_file`.
-Additional options include printing the symbol table:
 
+### Print Symbol Table
+
+To print the symbol table that is generated during assembly, use the `-s` switch:
+
+    ```
     python chip8asm/chip8asm.py test.asm -s
+    ```
 
 Which will have the following output:
 
+    ```
     -- Symbol Table --
     start 0x200
     data1 0x209
     data 0x208
+    ```
 
-Print out the assembled version of the input:
+### Print Assembled Statements
 
+To print out the assembled version of the program, use the `-p` switch:
+
+    ```
     python chip8asm/chip8asm.py test.asm -p
+    ```
 
 Which will have the following output:
 
+    ```
     -- Assembled Statements --
     0x0200 6100      start  LOAD           r1,$0  # Clear contents of register 1            
     0x0202 7101              ADD           r1,$1  # Add 1 to the register                   
     0x0204 310A              SKE           r1,$A  # Check to see if we are at 10            
     0x0206 1200             JUMP           start  # Jump back to the start                  
-    0x0208 1208        end  JUMP             end  # Loop forever                  
+    0x0208 1208        end  JUMP             end  # Loop forever
+    ```
+
+With this output, the first column is the offset in hex where the statement starts,
+the second column contains the full machine-code operand, the third column is the
+user-supplied label for the statement, the forth column is the mnemonic, the fifth
+column is the register values of other numeric or label data the operation will
+work on, and the fifth column is the comment string.
 
 
-## Format
+### Input Format
 
 The input file needs to follow the format below:
 
+    ```
     LABEL    MNEMONIC    OPERANDS    COMMENT
+    ```
 
 Where:
 
@@ -70,6 +112,7 @@ Where:
 
 An example file:
 
+    ```
     # A comment line that contains nothing
     clear    CLR
     start    LOAD    r1,$0     Clear contents of register 1
@@ -79,11 +122,15 @@ An example file:
     end      JUMP    end       Loop forever
     data     FCB     $1A       One byte piece of data
     data1    FDB     $FBEE     Two byte piece of data
+    ```
 
 
-### Mnemonic Table
+## Mnemonic Table
 
-The assembler supports the following Mnemonics:
+The assembler supports mnemonics for both the Chip 8 and Super Chip 8 language
+specifications, as well as pseudo operations.
+
+### Chip 8 Mnemonics
 
 | Mnemonic | Opcode | Operands | Description |
 | -------- | ------ | :------: | ----------- |
@@ -103,8 +150,8 @@ The assembler supports the following Mnemonics:
 | `XOR`    | `8st3` | 2 | Perform logical XOR on register `s` and `t` and store in `t`   |
 | `ADDR`   | `8st4` | 2 | Add `s` to `t` and store in `s` - register `F` set on carry    |
 | `SUB`    | `8st5` | 2 | Subtract `s` from `t` and store in `s` - register `F` set on !borrow         |
-| `SHR`    | `8s06` | 1 | Shift bits in register `s` 1 bit to the right - bit 0 shifts to register `F` |
-| `SHL`    | `8s0E` | 1 | Shift bits in register `s` 1 bit to the left - bit 7 shifts to register `F`  |
+| `SHR`    | `8st6` | 2 | Shift bits in `s` 1 bit right, store in `t` - bit 0 shifts to register `F` |
+| `SHL`    | `8stE` | 2 | Shift bits in `s` 1 bit left, store in `t` - bit 7 shifts to register `F`  |
 | `SKRNE`  | `9st0` | 2 | Skip next instruction if register `s` not equal register `t`   |
 | `LOADI`  | `Annn` | 1 | Load index with value `nnn`                                    |
 | `JUMPI`  | `Bnnn` | 1 | Jump to address `nnn` + index                                  |
@@ -122,7 +169,7 @@ The assembler supports the following Mnemonics:
 | `STOR`   | `Fs55` | 1 | Store the values of register `s` registers at index            |
 | `READ`   | `Fs65` | 1 | Read back the stored values at index into registers            |
 
-Additionally, the assembler supports the follow super chip 8 Mnemonics:
+### Super Chip 8 Mnemonics
 
 | Mnemonic | Opcode | Operands | Description |
 | -------- | ------ | :------: | ----------- |
@@ -135,7 +182,7 @@ Additionally, the assembler supports the follow super chip 8 Mnemonics:
 | `SRPL`   | `Fs75` | 1 | Store subset of registers in RPL store                         |
 | `LRPL`   | `Fs85` | 1 | Read back subset of registers from RPL store                   |
 
-There are two additional pseudo operations that are supported:
+### Pseudo Operations
 
 | Mnemonic | Description |
 | -------- | ----------- |
@@ -158,7 +205,7 @@ Operands may be one of three different types:
 
 ## License
 
-Please see the file called LICENSE.
+Please see the file called `LICENSE`.
 
 
 ## Further Documentation

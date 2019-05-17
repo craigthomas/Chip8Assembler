@@ -36,18 +36,14 @@ The only requirements for this project is:
 To install the source files, simply clone the repository in the directory
 of your choice:
 
-    ```
     git clone https://github.com/craigthomas/Chip8Assembler.git
-    ```
 
 
 ## Usage
 
 To run the assembler:
 
-    ```
     python chip8asm/chip8asm.py input_file -o output_file
-    ```
 
 This will assemble the instructions found in file `input_file` and will generate
 the associated Chip 8 machine instructions in binary format in `output_file`.
@@ -56,37 +52,29 @@ the associated Chip 8 machine instructions in binary format in `output_file`.
 
 To print the symbol table that is generated during assembly, use the `-s` switch:
 
-    ```
     python chip8asm/chip8asm.py test.asm -s
-    ```
 
 Which will have the following output:
 
-    ```
     -- Symbol Table --
     start 0x200
     data1 0x209
     data 0x208
-    ```
 
 ### Print Assembled Statements
 
 To print out the assembled version of the program, use the `-p` switch:
 
-    ```
     python chip8asm/chip8asm.py test.asm -p
-    ```
 
 Which will have the following output:
 
-    ```
     -- Assembled Statements --
     0x0200 6100      start  LOAD           r1,$0  # Clear contents of register 1            
     0x0202 7101              ADD           r1,$1  # Add 1 to the register                   
     0x0204 310A              SKE           r1,$A  # Check to see if we are at 10            
     0x0206 1200             JUMP           start  # Jump back to the start                  
     0x0208 1208        end  JUMP             end  # Loop forever
-    ```
 
 With this output, the first column is the offset in hex where the statement starts,
 the second column contains the full machine-code operand, the third column is the
@@ -99,9 +87,7 @@ work on, and the fifth column is the comment string.
 
 The input file needs to follow the format below:
 
-    ```
     LABEL    MNEMONIC    OPERANDS    COMMENT
-    ```
 
 Where:
 
@@ -112,7 +98,6 @@ Where:
 
 An example file:
 
-    ```
     # A comment line that contains nothing
     clear    CLR
     start    LOAD    r1,$0     Clear contents of register 1
@@ -122,7 +107,6 @@ An example file:
     end      JUMP    end       Loop forever
     data     FCB     $1A       One byte piece of data
     data1    FDB     $FBEE     Two byte piece of data
-    ```
 
 
 ## Mnemonic Table

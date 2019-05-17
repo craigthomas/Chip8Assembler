@@ -1,5 +1,7 @@
 # (Super) Chip 8 Assembler
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+
 ## Table of Contents
 
 1. [What is it?](#what-is-it)

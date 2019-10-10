@@ -1,6 +1,10 @@
 # (Super) Chip 8 Assembler
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Build Status](https://img.shields.io/travis/craigthomas/Chip8Assembler?style=flat-square)](https://travis-ci.org/craigthomas/Chip8Assembler) 
+[![Codecov](https://img.shields.io/codecov/c/gh/craigthomas/Chip8Assembler?style=flat-square)](https://codecov.io/gh/craigthomas/Chip8Assembler) 
+[![Codacy Badge](https://img.shields.io/codacy/grade/f100b6deb9bf4729a2c55ef12fb695c9?style=flat-square)](https://www.codacy.com/app/craig-thomas/Chip8Assembler?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=craigthomas/Chip8Python&amp;utm_campaign=Badge_Grade)
+[![Dependencies](https://img.shields.io/librariesio/github/craigthomas/Chip8Assembler?style=flat-square)](https://libraries.io/github/craigthomas/Chip8Assembler)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 
 ## Table of Contents
 
@@ -8,9 +12,9 @@
 2. [Requirements](#requirements)
 3. [Installation](#installation)
 4. [Usage](#usage)
-    1. [Print Symbol Table](#print-symbol-table)
-    2. [Print Assembled Statements](#print-assembled-statements)
-    3. [Input Format](#input-format)
+    1. [Input Format](#input-format)
+    2. [Print Symbol Table](#print-symbol-table)
+    3. [Print Assembled Statements](#print-assembled-statements)
 5. [Mnemonic Table](#mnemonic-table)
     1. [Chip 8 Mnemonics](#chip-8-mnemonics)
     2. [Super Chip 8 Mnemonics](#super-chip-8-mnemonics)
@@ -21,69 +25,39 @@
 
 ## What is it?
 
-This project is a (Super) Chip 8 assembler written in Python 2.7. The assembler will
+This project is a (Super) Chip 8 assembler written in Python 3.6. The assembler will
 take valid Super Chip 8 assembly statements and generate a binary file containing
 the correct machine instructions.
 
 
 ## Requirements
 
-The only requirements for this project is:
-
-* [Python 2.7](http://www.python.org)
+In order to run the assembler, you will need to use Python 3.6 or greater. If you wish
+to clone the repository for development, you will need Git.
 
 
 ## Installation
 
-To install the source files, simply clone the repository in the directory
-of your choice:
+To install the source files, download the latest release from the 
+[releases](https://github.com/craigthomas/Chip8Assembler/releases) section of 
+the repository and unzip the contents in a directory of your choice. Or, 
+clone the repository in the directory of your choice with:
 
     git clone https://github.com/craigthomas/Chip8Assembler.git
+    
+Next, you will need to install the required packages for the file:
+
+    pip install -r requirements.txt
 
 
 ## Usage
 
 To run the assembler:
 
-    python chip8asm/chip8asm.py input_file -o output_file
+    python assembler.py input_file --output output_file
 
 This will assemble the instructions found in file `input_file` and will generate
 the associated Chip 8 machine instructions in binary format in `output_file`.
-
-### Print Symbol Table
-
-To print the symbol table that is generated during assembly, use the `-s` switch:
-
-    python chip8asm/chip8asm.py test.asm -s
-
-Which will have the following output:
-
-    -- Symbol Table --
-    start 0x200
-    data1 0x209
-    data 0x208
-
-### Print Assembled Statements
-
-To print out the assembled version of the program, use the `-p` switch:
-
-    python chip8asm/chip8asm.py test.asm -p
-
-Which will have the following output:
-
-    -- Assembled Statements --
-    0x0200 6100      start  LOAD           r1,$0  # Clear contents of register 1            
-    0x0202 7101              ADD           r1,$1  # Add 1 to the register                   
-    0x0204 310A              SKE           r1,$A  # Check to see if we are at 10            
-    0x0206 1200             JUMP           start  # Jump back to the start                  
-    0x0208 1208        end  JUMP             end  # Loop forever
-
-With this output, the first column is the offset in hex where the statement starts,
-the second column contains the full machine-code operand, the third column is the
-user-supplied label for the statement, the forth column is the mnemonic, the fifth
-column is the register values of other numeric or label data the operation will
-work on, and the fifth column is the comment string.
-
 
 ### Input Format
 
@@ -94,9 +68,9 @@ The input file needs to follow the format below:
 Where:
 
 * `LABEL` is a 15 character label for the statement
-* `MNEMONIC` is a Chip 8 operation mnemonic from the table below
-* `OPERANDS` are registers, values or labels, as described in detail below
-* `COMMENT` is a 30 character comment describing the statement
+* `MNEMONIC` is a Chip 8 operation mnemonic from the [Mnemonic Table](#mnemonic-table) below
+* `OPERANDS` are registers, values or labels, as described in the [Operands](#operands) section
+* `COMMENT` is a 30 character comment describing the statement (may have a `#` preceding it)
 
 An example file:
 
@@ -109,6 +83,49 @@ An example file:
     end      JUMP    end       Loop forever
     data     FCB     $1A       One byte piece of data
     data1    FDB     $FBEE     Two byte piece of data
+
+
+### Print Symbol Table
+
+To print the symbol table that is generated during assembly, use the `--symbols` 
+switch:
+
+    python assembler.py test.asm --symbols
+
+Which will have the following output:
+
+    -- Symbol Table --
+    0x0200 clear
+    0x0202 start
+    0x020A end
+    0x020C data
+    0x020E data1
+
+
+### Print Assembled Statements
+
+To print out the assembled version of the program, use the `--print` switch:
+
+    python assembler.py test.asm --print
+
+Which will have the following output:
+
+    -- Assembled Statements --
+    0x0200 0000                                   # A comment line that contains nothing    
+    0x0200 00E0      clear   CLR                  #                                         
+    0x0202 6100      start  LOAD           r1,$0  # Clear contents of register 1            
+    0x0204 7101              ADD           r1,$1  # Add 1 to the register                   
+    0x0206 310A              SKE           r1,$A  # Check to see if we are at 10            
+    0x0208 1202             JUMP           start  # Jump back to the start                  
+    0x020A 120A        end  JUMP             end  # Loop forever                            
+    0x020C 001A       data   FCB             $1A  # One byte piece of data                  
+    0x020E FBEE      data1   FDB           $FBEE  # Two byte piece of data           
+
+With this output, the first column is the offset in hex where the statement starts,
+the second column contains the full machine-code operand, the third column is the
+user-supplied label for the statement, the forth column is the mnemonic, the fifth
+column is the register values of other numeric or label data the operation will
+work on, and the fifth column is the comment string.
 
 
 ## Mnemonic Table

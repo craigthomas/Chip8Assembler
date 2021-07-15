@@ -1,8 +1,7 @@
 # (Super) Chip 8 Assembler
 
-[![Build Status](https://img.shields.io/travis/craigthomas/Chip8Assembler?style=flat-square)](https://travis-ci.org/craigthomas/Chip8Assembler) 
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/craigthomas/Chip8Assembler/Build%20Test%20Coverage?style=flat-square)](https://github.com/craigthomas/Chip8Assembler/actions)
 [![Codecov](https://img.shields.io/codecov/c/gh/craigthomas/Chip8Assembler?style=flat-square)](https://codecov.io/gh/craigthomas/Chip8Assembler) 
-[![Codacy Badge](https://img.shields.io/codacy/grade/3b0c3f6765424b61ad911fb2d4f24e13?style=flat-square)](https://www.codacy.com/app/craig-thomas/Chip8Assembler?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=craigthomas/Chip8Python&amp;utm_campaign=Badge_Grade)
 [![Dependencies](https://img.shields.io/librariesio/github/craigthomas/Chip8Assembler?style=flat-square)](https://libraries.io/github/craigthomas/Chip8Assembler)
 [![Releases](https://img.shields.io/github/release/craigthomas/Chip8Python?style=flat-square)](https://github.com/craigthomas/Chip8Python/releases)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://opensource.org/licenses/MIT)

@@ -1,6 +1,6 @@
 # (Super) Chip 8 Assembler
 
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/craigthomas/Chip8Assembler/Build%20Test%20Coverage?style=flat-square)](https://github.com/craigthomas/Chip8Assembler/actions)
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/craigthomas/Chip8Assembler/python-app.yml?style=flat-square&branch=main)](https://github.com/craigthomas/Chip8Assembler/actions)
 [![Codecov](https://img.shields.io/codecov/c/gh/craigthomas/Chip8Assembler?style=flat-square)](https://codecov.io/gh/craigthomas/Chip8Assembler) 
 [![Dependencies](https://img.shields.io/librariesio/github/craigthomas/Chip8Assembler?style=flat-square)](https://libraries.io/github/craigthomas/Chip8Assembler)
 [![Releases](https://img.shields.io/github/release/craigthomas/Chip8Python?style=flat-square)](https://github.com/craigthomas/Chip8Python/releases)

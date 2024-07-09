@@ -27,7 +27,7 @@ class Program(object):
 
     def parse_file(self, filename):
         """
-        Parses all of the lines in a file, and transforms each one into
+        Parses the lines in a file, and transforms each one into
         a Statement.
 
         :param filename: the name of the file to parse
@@ -66,7 +66,7 @@ class Program(object):
                 self.symbol_table[label] = hex(self.address)
             statement.set_address(hex(self.address))
             if not statement.comment_only and not statement.is_empty():
-                self.address += 1 if statement.operation == FCB else 2
+                self.address += 1 if statement.mnemonic == FCB else 2
 
     def fix_opcodes(self):
         """

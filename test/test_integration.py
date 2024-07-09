@@ -59,7 +59,7 @@ class TestIntegration(unittest.TestCase):
         program.statements.append(statement)
         program = self.translate_statements(program)
         machine_code = program.generate_machine_code()
-        self.assertEqual([0xF2, 0x03], machine_code)
+        self.assertEqual([0xF2, 0x01], machine_code)
 
     def test_savesub_mnemonic_translate_correct(self):
         program = Program()

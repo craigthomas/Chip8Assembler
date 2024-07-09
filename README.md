@@ -192,8 +192,8 @@ specifications, as well as pseudo operations.
 | `SCRU`     | `00Dn` |    1     | Scrolls the current bitplane up `n` pixels            |
 | `SAVESUB`  | `5st2` |    2     | Saves subset of registers from `s` to `t` in memory   |
 | `LOADSUB`  | `5st3` |    2     | Loads subset of registers from `s` to `t` from memory |
+| `PLANE`    | `Fn01` |    1     | Sets the drawing bitplane to `n`                      |
 | `AUDIO`    | `F002` |    0     | Load 16-byte audio pattern buffer from `index`        |
-| `PLANE`    | `Fn03` |    1     | Sets the drawing bitplane to `n`                      |
 | `PITCH`    | `Fs3A` |    1     | Sets the internal pitch to the value in register `s`  |
 
 

@@ -73,8 +73,8 @@ OPERATIONS = [
     Operation(op="00Dn", operands=1, source=0, target=0, numeric=1, mnemonic="SCRU"),
     Operation(op="5st2", operands=2, source=1, target=1, numeric=0, mnemonic="SAVESUB"),
     Operation(op="5st3", operands=2, source=1, target=1, numeric=0, mnemonic="LOADSUB"),
+    Operation(op="Fn01", operands=1, source=0, target=0, numeric=1, mnemonic="PLANE"),
     Operation(op="F002", operands=0, source=0, target=0, numeric=0, mnemonic="AUDIO"),
-    Operation(op="Fn03", operands=1, source=0, target=0, numeric=1, mnemonic="PLANE"),
     Operation(op="Fs3A", operands=1, source=1, target=0, numeric=0, mnemonic="PITCH"),
 ]
 
@@ -126,14 +126,16 @@ class Statement(object):
         self.numeric = None
 
     def __str__(self):
-        return "0x{} {} {} {} {}  # {}".format(
-            self.get_address()[2:].upper().rjust(4, '0'),
-            self.get_op_code().upper().rjust(4, '0'),
-            self.get_label().rjust(10, ' '),
-            self.get_mnemonic().rjust(5, ' '),
-            self.get_operands().rjust(15, ' '),
-            self.get_comment().ljust(40, ' ')
-        )
+        string = f"${self.get_address()[2:].upper().rjust(4, '0')} "
+        if self.mnemonic == FCB:
+            string += f"{self.get_op_code().upper().rjust(4, ' ')} "
+        else:
+            string += f"{self.get_op_code().upper().rjust(4, '0')} "
+        string += f"{self.get_label().rjust(10, ' ')} "
+        string += f"{self.get_mnemonic().rjust(5, ' ')} "
+        string += f"{self.get_operands().rjust(15, ' ')} "
+        string += f"{self.get_comment().ljust(40, ' ')}"
+        return string
 
     @staticmethod
     def is_register(string):

@@ -46,7 +46,7 @@ class TestIntegration(unittest.TestCase):
     def test_pitch_mnemonic_translate_correct(self):
         program = Program()
         statement = Statement()
-        statement.parse_line("    PITCH r1    ; audio statement")
+        statement.parse_line("    PITCH r1    ; pitch statement")
         program.statements.append(statement)
         program = self.translate_statements(program)
         machine_code = program.generate_machine_code()

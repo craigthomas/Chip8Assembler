@@ -70,4 +70,13 @@ class TestIntegration(unittest.TestCase):
         machine_code = program.generate_machine_code()
         self.assertEqual([0x51, 0x62], machine_code)
 
+    def test_loadsub_mnemonic_translate_correct(self):
+        program = Program()
+        statement = Statement()
+        statement.parse_line("    LOADSUB r1,r6    ; load subset statement")
+        program.statements.append(statement)
+        program = self.translate_statements(program)
+        machine_code = program.generate_machine_code()
+        self.assertEqual([0x51, 0x63], machine_code)
+
 # E N D   O F   F I L E #######################################################

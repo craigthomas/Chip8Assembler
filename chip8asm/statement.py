@@ -1,5 +1,5 @@
 """
-Copyright (C) 2014-2019 Craig Thomas
+Copyright (C) 2024 Craig Thomas
 This project uses an MIT style license - see LICENSE for details.
 
 This file contains Exceptions for the Chip 8 Assembler.
@@ -71,6 +71,7 @@ OPERATIONS = [
     Operation(op="Fs85", operands=1, source=1, target=0, numeric=0, mnemonic="LRPL"),
     # XO Chip Instructions
     Operation(op="F002", operands=0, source=0, target=0, numeric=0, mnemonic="AUDIO"),
+    Operation(op="Fn03", operands=1, source=0, target=0, numeric=1, mnemonic="PLANE"),
     Operation(op="Fs3A", operands=1, source=1, target=0, numeric=0, mnemonic="PITCH"),
 ]
 

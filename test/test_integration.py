@@ -52,4 +52,13 @@ class TestIntegration(unittest.TestCase):
         machine_code = program.generate_machine_code()
         self.assertEqual([0xF1, 0x3A], machine_code)
 
+    def test_plane_mnemonic_translate_correct(self):
+        program = Program()
+        statement = Statement()
+        statement.parse_line("    PLANE $2    ; plane statement")
+        program.statements.append(statement)
+        program = self.translate_statements(program)
+        machine_code = program.generate_machine_code()
+        self.assertEqual([0xF2, 0x03], machine_code)
+
 # E N D   O F   F I L E #######################################################

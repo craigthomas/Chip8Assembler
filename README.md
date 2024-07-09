@@ -187,11 +187,12 @@ specifications, as well as pseudo operations.
 
 ### XO Chip Mnemonics
 
-| Mnemonic | Opcode | Operands | Description                                          |
-|----------|--------|:--------:|------------------------------------------------------|
-| `AUDIO`  | `F002` |    0     | Load 16-byte audio pattern buffer from `index`       |
-| `PLANE`  | `Fn03` |    1     | Sets the drawing bitplane to `n`                     |
-| `PITCH`  | `Fs3A` |    1     | Sets the internal pitch to the value in register `s` |
+| Mnemonic   | Opcode | Operands | Description                                          |
+|------------|--------|:--------:|------------------------------------------------------|
+| `SAVESUB`  | `5st2` |    2     | Saves subset of registers from `s` to `t` in memory  |
+| `AUDIO`    | `F002` |    0     | Load 16-byte audio pattern buffer from `index`       |
+| `PLANE`    | `Fn03` |    1     | Sets the drawing bitplane to `n`                     |
+| `PITCH`    | `Fs3A` |    1     | Sets the internal pitch to the value in register `s` |
 
 
 ### Pseudo Operations

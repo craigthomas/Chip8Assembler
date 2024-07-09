@@ -1,5 +1,5 @@
 """
-Copyright (C) 2012-2019 Craig Thomas
+Copyright (C) 2024 Craig Thomas
 This project uses an MIT style license - see LICENSE for details.
 
 A Chip 8 assembler - see the README.md file for details.
@@ -144,43 +144,43 @@ class TestStatement(unittest.TestCase):
 
     def test_get_label_correct(self):
         statement = Statement()
-        self.assertEquals("", statement.get_label())
+        self.assertEqual("", statement.get_label())
         statement.label = "label"
         self.assertEqual("label", statement.get_label())
 
     def test_get_comment_correct(self):
         statement = Statement()
-        self.assertEquals("", statement.get_comment())
+        self.assertEqual("", statement.get_comment())
         statement.comment = "comment"
         self.assertEqual("comment", statement.get_comment())
 
     def test_get_mnemonic_correct(self):
         statement = Statement()
-        self.assertEquals("", statement.get_mnemonic())
+        self.assertEqual("", statement.get_mnemonic())
         statement.mnemonic = "mnemonic"
         self.assertEqual("mnemonic", statement.get_mnemonic())
 
     def test_get_op_code_correct(self):
         statement = Statement()
-        self.assertEquals("", statement.get_op_code())
+        self.assertEqual("", statement.get_op_code())
         statement.op_code = "op_code"
         self.assertEqual("op_code", statement.get_op_code())
 
     def test_get_operands_correct(self):
         statement = Statement()
-        self.assertEquals("", statement.get_operands())
+        self.assertEqual("", statement.get_operands())
         statement.operands = "operands"
         self.assertEqual("operands", statement.get_operands())
 
     def test_get_address_correct(self):
         statement = Statement()
-        self.assertEquals("", statement.get_address())
+        self.assertEqual("", statement.get_address())
         statement.address = "address"
         self.assertEqual("address", statement.get_address())
 
     def test_set_address_correct(self):
         statement = Statement()
-        self.assertEquals("", statement.get_address())
+        self.assertEqual("", statement.get_address())
         statement.set_address("address")
         self.assertEqual("address", statement.get_address())
 

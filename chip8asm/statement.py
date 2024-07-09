@@ -51,6 +51,7 @@ OPERATIONS = [
     Operation(op="Dstn", operands=3, source=1, target=1, numeric=1, mnemonic="DRAW"),
     Operation(op="Es9E", operands=1, source=1, target=0, numeric=0, mnemonic="SKPR"),
     Operation(op="EsA1", operands=1, source=1, target=0, numeric=0, mnemonic="SKUP"),
+    Operation(op="F002", operands=0, source=0, target=0, numeric=0, mnemonic="AUDIO"),
     Operation(op="Ft07", operands=1, source=0, target=1, numeric=0, mnemonic="MOVED"),
     Operation(op="Ft0A", operands=1, source=0, target=1, numeric=0, mnemonic="KEYD"),
     Operation(op="Fs15", operands=1, source=1, target=0, numeric=0, mnemonic="LOADD"),

@@ -189,6 +189,7 @@ specifications, as well as pseudo operations.
 
 | Mnemonic   | Opcode | Operands | Description                                           |
 |------------|--------|:--------:|-------------------------------------------------------|
+| `SCRU`     | `00Dn` |    1     | Scrolls the current bitplane up `n` pixels            |
 | `SAVESUB`  | `5st2` |    2     | Saves subset of registers from `s` to `t` in memory   |
 | `LOADSUB`  | `5st3` |    2     | Loads subset of registers from `s` to `t` from memory |
 | `AUDIO`    | `F002` |    0     | Load 16-byte audio pattern buffer from `index`        |

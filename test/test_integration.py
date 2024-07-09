@@ -79,4 +79,13 @@ class TestIntegration(unittest.TestCase):
         machine_code = program.generate_machine_code()
         self.assertEqual([0x51, 0x63], machine_code)
 
+    def test_scrollup_mnemonic_translate_correct(self):
+        program = Program()
+        statement = Statement()
+        statement.parse_line("    SCRU 5    ; scroll up statement")
+        program.statements.append(statement)
+        program = self.translate_statements(program)
+        machine_code = program.generate_machine_code()
+        self.assertEqual([0x00, 0xD5], machine_code)
+
 # E N D   O F   F I L E #######################################################

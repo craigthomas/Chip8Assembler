@@ -70,6 +70,7 @@ OPERATIONS = [
     Operation(op="Fs75", operands=1, source=1, target=0, numeric=0, mnemonic="SRPL"),
     Operation(op="Fs85", operands=1, source=1, target=0, numeric=0, mnemonic="LRPL"),
     # XO Chip Instructions
+    Operation(op="00Dn", operands=1, source=0, target=0, numeric=1, mnemonic="SCRU"),
     Operation(op="5st2", operands=2, source=1, target=1, numeric=0, mnemonic="SAVESUB"),
     Operation(op="5st3", operands=2, source=1, target=1, numeric=0, mnemonic="LOADSUB"),
     Operation(op="F002", operands=0, source=0, target=0, numeric=0, mnemonic="AUDIO"),

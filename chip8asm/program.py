@@ -1,5 +1,5 @@
 """
-Copyright (C) 2014-2019 Craig Thomas
+Copyright (C) 2024 Craig Thomas
 This project uses an MIT style license - see LICENSE for details.
 
 This file contains the main Program class for the Chip 8 Assembler.
@@ -96,6 +96,19 @@ class Program(object):
         """
         return self.statements
 
+    def generate_machine_code(self):
+        """
+        Generates the machine code from the actual statements.
+
+        :return: a list of integers representing the resulting machine code output
+        """
+        machine_codes = []
+        for statement in self.statements:
+            if not statement.is_empty() and not statement.comment_only:
+                for index in range(0, len(statement.op_code), 2):
+                    machine_codes.append(int(statement.op_code[index:index + 2], 16))
+        return machine_codes
+
     def save_binary_file(self, filename):
         """
         Writes out the assembled statements to the specified file
@@ -103,11 +116,7 @@ class Program(object):
 
         :param filename: the name of the file to save statements
         """
-        machine_codes = []
-        for statement in self.statements:
-            if not statement.is_empty() and not statement.comment_only:
-                for index in range(0, len(statement.op_code), 2):
-                    machine_codes.append(int(statement.op_code[index:index + 2], 16))
+        machine_codes = self.generate_machine_code()
         with open(filename, "wb") as outfile:
             outfile.write(bytearray(machine_codes))
 

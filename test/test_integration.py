@@ -43,4 +43,13 @@ class TestIntegration(unittest.TestCase):
         machine_code = program.generate_machine_code()
         self.assertEqual([0xF0, 0x02], machine_code)
 
+    def test_pitch_mnemonic_translate_correct(self):
+        program = Program()
+        statement = Statement()
+        statement.parse_line("    PITCH r1    ; pitch statement")
+        program.statements.append(statement)
+        program = self.translate_statements(program)
+        machine_code = program.generate_machine_code()
+        self.assertEqual([0xF1, 0x3A], machine_code)
+
 # E N D   O F   F I L E #######################################################

@@ -51,7 +51,6 @@ OPERATIONS = [
     Operation(op="Dstn", operands=3, source=1, target=1, numeric=1, mnemonic="DRAW"),
     Operation(op="Es9E", operands=1, source=1, target=0, numeric=0, mnemonic="SKPR"),
     Operation(op="EsA1", operands=1, source=1, target=0, numeric=0, mnemonic="SKUP"),
-    Operation(op="F002", operands=0, source=0, target=0, numeric=0, mnemonic="AUDIO"),
     Operation(op="Ft07", operands=1, source=0, target=1, numeric=0, mnemonic="MOVED"),
     Operation(op="Ft0A", operands=1, source=0, target=1, numeric=0, mnemonic="KEYD"),
     Operation(op="Fs15", operands=1, source=1, target=0, numeric=0, mnemonic="LOADD"),
@@ -69,7 +68,10 @@ OPERATIONS = [
     Operation(op="00FE", operands=0, source=0, target=0, numeric=0, mnemonic="EXTD"),
     Operation(op="00FF", operands=0, source=0, target=0, numeric=0, mnemonic="EXTE"),
     Operation(op="Fs75", operands=1, source=1, target=0, numeric=0, mnemonic="SRPL"),
-    Operation(op="Fs85", operands=1, source=1, target=0, numeric=0, mnemonic="LRPL")
+    Operation(op="Fs85", operands=1, source=1, target=0, numeric=0, mnemonic="LRPL"),
+    # XO Chip Instructions
+    Operation(op="F002", operands=0, source=0, target=0, numeric=0, mnemonic="AUDIO"),
+    Operation(op="Fs3A", operands=1, source=1, target=0, numeric=0, mnemonic="PITCH"),
 ]
 
 # Pseudo operations

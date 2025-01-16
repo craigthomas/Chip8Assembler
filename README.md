@@ -3,7 +3,7 @@
 [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/craigthomas/Chip8Assembler/python-app.yml?style=flat-square&branch=main)](https://github.com/craigthomas/Chip8Assembler/actions)
 [![Codecov](https://img.shields.io/codecov/c/gh/craigthomas/Chip8Assembler?style=flat-square)](https://codecov.io/gh/craigthomas/Chip8Assembler) 
 [![Dependencies](https://img.shields.io/librariesio/github/craigthomas/Chip8Assembler?style=flat-square)](https://libraries.io/github/craigthomas/Chip8Assembler)
-[![Releases](https://img.shields.io/github/release/craigthomas/Chip8Python?style=flat-square)](https://github.com/craigthomas/Chip8Python/releases)
+[![Releases](https://img.shields.io/github/release/craigthomas/Chip8Assembler?style=flat-square)](https://github.com/craigthomas/Chip8Python/releases)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 
 ## Table of Contents
